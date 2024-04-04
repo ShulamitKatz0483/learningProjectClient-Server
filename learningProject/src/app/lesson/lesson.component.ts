@@ -65,7 +65,7 @@ export class LessonComponent implements OnInit {
             this.subCategoryData.forEach(subCategory => {
                 if (lesson.idSubCategory === subCategory.idSubCategory) {
                     mergedLesson.lessonName = subCategory.subCategoryName;
-                    mergedLesson.idLesson = subCategory.idSubCategory;
+                    mergedLesson.idLesson = lesson.idLesson;
                 }
             });
             this.userData.forEach(user => {

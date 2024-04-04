@@ -1,8 +1,10 @@
-<div *ngIf="isUserLoggedIn"><button mat-button color="primary" (click)="logOut()">log out</button>
-  <button  (mouseenter)="userOnMouseEnter()"  (mouseleave)="userOnMouseLeave()" mat-icon-button color="warn"> 
- <mat-icon>person</mat-icon></button>
- <p>{{ dynamicContent }} Manger</p>
- </div>
+<div *ngIf="isUserLoggedIn">
+  <button mat-button color="primary" (click)="logOut()">log out</button>
+  <button (mouseenter)="userOnMouseEnter()" (mouseleave)="userOnMouseLeave()" mat-icon-button color="warn">
+    <mat-icon>person</mat-icon>
+  </button>
+  <p>{{ dynamicContent }} Manger</p>
+</div>
 
 <table mat-table [dataSource]="lessonsData" class="mat-elevation-z8">
   <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
@@ -19,18 +21,18 @@
       {{ lessonData[column] }}
     </td>
   </ng-container>
-  
-  <ng-container matColumnDef="signup">
-    <th mat-header-cell *matHeaderCellDef>Register to lesson </th>
+
+  <ng-container matColumnDef="editAndMoreDetails">
+    <th mat-header-cell *matHeaderCellDef>Edit and more details </th>
     <td mat-cell *matCellDef="let lessonData">
       <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
-        (click)="rowClicked(lessonData)">Editing and more details
+        (click)="getStudentDetail(lessonData)">Editing and more details
       </a>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let lessonData; columns: displayedColumns.concat('signup');" (click)="rowClicked(lessonData)"></tr>
+  <tr mat-row *matRowDef="let lessonData; columns: displayedColumns.concat('editAndMoreDetails');" (click)="getStudentDetail(lessonData)"></tr>
 </table>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -40,30 +42,36 @@
   </div>
   <div class="offcanvas-body">
     <div>
-        <button mat-button color="primary" >Delete this lesson</button>
-        <div class="container">
-          <h2>Students in Lesson</h2>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Level</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let student of clickedLesson?.students">
-                <td>{{ student.idUser }}</td>
-                <td>{{ student.idStudentInLesson }}</td>
-                <td>{{ student.idLesson }}</td>
-                <td>{{ student.email }}</td>
-                <td>{{ student.level }}</td>
-              </tr>
-            </tbody>
-          </table> 
-        </div>
+      <button mat-button color="primary">Delete this lesson</button>
+      <div class="container">
+        <h2>Students in Lesson</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of lessonDetails?.students">
+              <td>{{ student.idUser }}</td>
+              <td>{{ student.name }}</td>
+              <td>{{ student.phoneNumber }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.level }}</td>
+            </tr>
+          </tbody>
+        </table>
+<div *ngFor="let column of editLessonDetails; let i = index" [matColumnDef]="column">
+  <input matInput [value]="lessonDetails[column]" [formControl]="editLessonForm.controls[column]">
+</div>
+<button (click)="updateLessonDetails()">update changes</button>
+
+
+      </div>
     </div>
   </div>
 </div>

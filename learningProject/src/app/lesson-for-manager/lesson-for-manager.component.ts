@@ -9,7 +9,7 @@ import { LessonForManager } from '../LessonForManager.model';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { StudentInLessonService } from '../services/student-in-lesson.service';
-
+import {User}from '../User.model';
 @Component({
     selector: 'app-lesson-for-manager',
     templateUrl: './lesson-for-manager.component.html',
@@ -22,10 +22,11 @@ export class LessonForManagerComponent implements OnInit {
     userData: any[] = [];
     studentInLesson: any[] = [];
     storedData: any;
-    clickedLesson: any;
+    lessonDetails: LessonForManager=new LessonForManager();
     isUserLoggedIn: boolean = false;
-
+    currentStudent:User=new User();
     displayedColumns: string[] = ['lessonName', 'lectureName', 'time', 'numOfStudents'];
+    editLessonDetails: string[] = ['lessonName', 'lectureName', 'time', 'phoneNumber'];
     dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
     @ViewChild(MatSort) sort: MatSort = new MatSort();
     filterForm: FormGroup = this.formBuilder.group({
@@ -33,7 +34,12 @@ export class LessonForManagerComponent implements OnInit {
         time: new FormControl(''),
         lectureName: new FormControl(''),
         numOfStudents: new FormControl('')
-
+    });
+    editLessonForm: FormGroup = this.formBuilder.group({
+        lessonName: new FormControl(''),
+        time: new FormControl(''),
+        lectureName: new FormControl(''),
+        phoneNumber: new FormControl('')
     });
     dynamicContent: string = ''; // Initial content
     showEditSidebar = false;
@@ -49,7 +55,7 @@ export class LessonForManagerComponent implements OnInit {
     async ngOnInit(): Promise<void> {
         await this.getLesson();
         await this.getSubCategory();
-        await this.getLectur();
+        await this.getUsers();
         await this.getStudent();
         this.margeData();
         const userData = localStorage.getItem('user');
@@ -85,20 +91,29 @@ export class LessonForManagerComponent implements OnInit {
             });
             this.studentInLesson.forEach(student => {
                 if (student.idLesson == lesson.idLesson) {
-                    mergedLesson.students.push(student);
-                    mergedLesson.numOfStudents += 1;
+                    this.userData.forEach(user => {
+                        if (student.idUser === user.idUser) {
+                            this.currentStudent = user;
+                            mergedLesson.students.push(this.currentStudent);
+                        }
+                    });
                 }
-            })
+            });
+            mergedLesson.numOfStudents=mergedLesson.students.length;
             this.dataNow.push(mergedLesson);
         });
+        
         this.lessonsData = this.dataNow;
         this.dataSource.data = this.lessonsData;
     }
+    
     getLesson(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.lessonService.getData().subscribe(
                 (data) => {
                     this.lessonsData = data;
+                    console.log(data);
+                    
                     resolve(data);
                 },
                 (error) => {
@@ -124,7 +139,7 @@ export class LessonForManagerComponent implements OnInit {
         });
     }
 
-    getLectur(): Promise<any> {
+    getUsers(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.userService.getData().subscribe(
                 (data) => {
@@ -156,12 +171,11 @@ export class LessonForManagerComponent implements OnInit {
 
     applyFilters() {
         const filterValue = this.filterForm.value;
-
+        
         this.dataSource.filterPredicate = (lesson: LessonForManager) => {
             const nameMatch = filterValue.lessonName ? lesson.lessonName.toLowerCase().includes(filterValue.lessonName.toLowerCase()) : true;
             const timeMatch = filterValue.time ? this.isTimeWithinRange(lesson.time, filterValue.time) : true;
             const lectureNameMatch = filterValue.lectureName ? lesson.lectureName.toLowerCase().includes(filterValue.lectureName.toLowerCase()) : true;
-
             return nameMatch && timeMatch && lectureNameMatch;
         };
 
@@ -186,41 +200,32 @@ export class LessonForManagerComponent implements OnInit {
         const rangeEnd = new Date(filterDate.getTime() + 30 * 60000);
         return lessonDate >= rangeStart && lessonDate <= rangeEnd;
     }
-    // editAndDetaills(lesson: LessonForManager) {
-    //     if (this.dataUser) {
-    //         this.storedData = JSON.parse(this.dataUser);
-    //         const studentInLesson = { idUser: this.storedData.idUser, idLesson: lesson.idLesson };
-    //         console.log(studentInLesson);
-    //         this.studenInLessonService.addStudentToLesson(studentInLesson)
-    //             .subscribe(
-    //                 (res) => {
-    //                     console.log('your registered to lesson successfully:', res);
-    //                     alert("your registered to lesson successfully")
-    //                 },
-    //                 (error) => {
-    //                     console.error('Error register to lesson:', error);
-    //                     alert("Error register to lesson");
-    //                 }
-    //             );;
-    //     } else {
-    //         this.router.navigate(['/login']);
-    //     }
-    // }
+
+   
     logOut() {
         localStorage.clear();
-        this.isUserLoggedIn = false;// S
+        this.isUserLoggedIn = false;
         this.router.navigate(['/lesson']);
 
-
     }
-    rowClicked(lesson: LessonForManager): void {
-        // Handle row click event here
-        this.clickedLesson = lesson;
-        console.log('Row clicked:', lesson);
+    getStudentDetail(lesson: LessonForManager): void {
+        this.lessonDetails = lesson;
+        this.editLessonForm.patchValue({
+            lessonName: this.lessonDetails.lessonName,
+            lectureName: this.lessonDetails.lectureName,
+            time: this.lessonDetails.time,
+            phoneNumber:"000",
+          });       
 
     }
 
     editAndDetails(lesson: LessonForManager): void {
 
     }
+    updateLessonDetails(){
+        console.log(this.editLessonForm.value);
+        
+    }
+    
+      
 }
