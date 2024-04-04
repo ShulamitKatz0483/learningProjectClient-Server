@@ -1,0 +1,70 @@
+<div *ngIf="isUserLoggedIn"><button mat-button color="primary" (click)="logOut()">log out</button>
+  <button  (mouseenter)="userOnMouseEnter()"  (mouseleave)="userOnMouseLeave()" mat-icon-button color="warn"> 
+ <mat-icon>person</mat-icon></button>
+ <p>{{ dynamicContent }} Manger</p>
+ </div>
+
+<table mat-table [dataSource]="lessonsData" class="mat-elevation-z8">
+  <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
+    <th mat-header-cell *matHeaderCellDef>
+      {{ column }}
+      <mat-form-field appearance="fill">
+        <input matInput [placeholder]="'Filter ' + column" [formControl]="filterForm.controls[column]">
+      </mat-form-field>
+      <button *ngIf="i === displayedColumns.length - 1 && i > 0" (click)="applyFilters()" mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+    </th>
+    <td mat-cell *matCellDef="let lessonData">
+      {{ lessonData[column] }}
+    </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="signup">
+    <th mat-header-cell *matHeaderCellDef>Register to lesson </th>
+    <td mat-cell *matCellDef="let lessonData">
+      <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+        (click)="rowClicked(lessonData)">Editing and more details
+      </a>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let lessonData; columns: displayedColumns.concat('signup');" (click)="rowClicked(lessonData)"></tr>
+</table>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+        <button mat-button color="primary" >Delete this lesson</button>
+        <div class="container">
+          <h2>Students in Lesson</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of clickedLesson?.students">
+                <td>{{ student.idUser }}</td>
+                <td>{{ student.idStudentInLesson }}</td>
+                <td>{{ student.idLesson }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.level }}</td>
+              </tr>
+            </tbody>
+          </table> 
+        </div>
+    </div>
+  </div>
+</div>
+<login></login>

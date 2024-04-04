@@ -1,0 +1,28 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="login-container">
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
+        <h2>Login</h2>
+        <div fxLayout="column" fxLayoutGap="10px" class="form-field">
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email">
+                <mat-error *ngIf="loginForm.get('email').hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="loginForm.get('email').hasError('email')">Invalid email format</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password">
+                <mat-error *ngIf="loginForm.get('password').hasError('required')">Password is required</mat-error>
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit">Login</button>
+        <a mat-button color="accent" (click)="navigateToSignUp()">To Sign Up Click Me</a>
+        <div *ngIf="isManager">
+            <button mat-raised-button color="primary"  (click)="goToManagerLesson()">goToManagerLesson</button>
+            <button mat-raised-button color="primary"  (click)="goToLesson()">goToLesson</button>
+        </div>
+    </form>
+ 
+    
+</div>

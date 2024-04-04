@@ -1,0 +1,32 @@
+<div *ngIf="isUserLoggedIn"><button mat-button color="primary" (click)="logOut()">log out</button>
+ <button  (mouseenter)="userOnMouseEnter()"  (mouseleave)="userOnMouseLeave()" mat-icon-button color="warn"> 
+<mat-icon>person</mat-icon></button>
+<p>{{ dynamicContent }}</p>
+</div>
+
+   <table mat-table [dataSource]="lessonsData" class="mat-elevation-z8">
+    <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
+      <th mat-header-cell *matHeaderCellDef>
+        {{ column }}
+        <mat-form-field appearance="fill">
+          <input matInput [placeholder]="'Filter ' + column" [formControl]="filterForm.controls[column]">
+        </mat-form-field>
+        <button *ngIf="i === displayedColumns.length - 1 && i > 0" (click)="applyFilters()" mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+      </th>
+      <td mat-cell *matCellDef="let lesson">
+        {{ lesson[column] }}
+      </td>~
+    </ng-container>
+  
+    <ng-container matColumnDef="signup">
+      <th mat-header-cell *matHeaderCellDef>Register to lesson </th>
+      <td mat-cell *matCellDef="let lesson">
+        <button mat-button color="primary" (click)="registerToLesson(lesson)" >Register to lesson</button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let lesson; columns: displayedColumns.concat('signup');"></tr>
+  </table>
