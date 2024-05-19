@@ -25,24 +25,24 @@
   <ng-container matColumnDef="editAndMoreDetails">
     <th mat-header-cell *matHeaderCellDef>Edit and more details </th>
     <td mat-cell *matCellDef="let lessonData">
-      <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
-        (click)="getStudentDetail(lessonData)">Editing and more details
+      <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+        aria-controls="offcanvasExample" (click)="getStudentDetail(lessonData)">Editing and more details
       </a>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let lessonData; columns: displayedColumns.concat('editAndMoreDetails');" (click)="getStudentDetail(lessonData)"></tr>
+  <tr mat-row *matRowDef="let lessonData; columns: displayedColumns.concat('editAndMoreDetails');"
+    (click)="getStudentDetail(lessonData)"></tr>
 </table>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <div>
-      <button mat-button color="primary">Delete this lesson</button>
+      <button mat-button color="primary" (click)="deleteLesson()" >Delete this lesson</button>
       <div class="container">
         <h2>Students in Lesson</h2>
         <table class="table table-striped">
@@ -65,14 +65,43 @@
             </tr>
           </tbody>
         </table>
-<div *ngFor="let column of editLessonDetails; let i = index" [matColumnDef]="column">
-  <input matInput [value]="lessonDetails[column]" [formControl]="editLessonForm.controls[column]">
-</div>
-<button (click)="updateLessonDetails()">update changes</button>
+        <div *ngFor="let column of editLessonDetails; let i = index" [matColumnDef]="column">
+          <input matInput [value]="lessonDetails[column]" [formControl]="editLessonForm.controls[column]">
+        </div>
+        <button (click)="updateLessonDetails()">update changes</button>
 
 
       </div>
     </div>
+  </div>
+</div>
+<a class="btn btn-primary" data-bs-toggle="offcanvas" href="#addNewLesson" role="button"
+  aria-controls="addNewLesson">Add new Lesson</a>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="addNewLesson" aria-labelledby="addNewLessonLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <label>Select Lecturer:</label>
+      <select [(ngModel)]="selectedUserId" >
+        <option *ngFor="let user of userData" [value]="user.idUser">{{ user.name }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Select Lesson Name:</label>
+      <select  [(ngModel)]="selectedSubCategoryId" >
+        <option *ngFor="let subCategory of subCategoryData" [value]="subCategory.idSubCategory">{{ subCategory.subCategoryName }}</option>
+      </select>
+      <div>
+        <label>Enter Lesson Hour (Format: 00:00:00):</label>
+        <input type="text" [(ngModel)]="lessonHour" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]" placeholder="HH:MM:SS">
+      </div>
+      <select  [(ngModel)]="selectedDavenId" >
+        <option *ngFor="let daven of davenData" [value]="daven.idDaven">{{daven.davenName }}</option>
+      </select>
+    </div>
+    <button (click)="addNewLesson()">Add New Lesson</button>
   </div>
 </div>
 <login></login>

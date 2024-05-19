@@ -7,13 +7,13 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class StudentInLessonService {
 
-  private apiUrl = 'http://localhost:8000'; 
+  private apiUrl = 'http://localhost:8000/studentInLesson'; 
 
   constructor(private http: HttpClient) { }
 
  
   addStudentToLesson(data:any): Observable<any> {
-    const url = `${this.apiUrl}/studentInLesson`;
+    const url = `${this.apiUrl}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     return this.http.post<any>(url, data)
@@ -25,6 +25,17 @@ export class StudentInLessonService {
     );
   }
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/studentInLesson`);
+    return this.http.get<any>(`${this.apiUrl}`);
   }
+  deleteStudentFromLesson(id:number){
+    const url = `${this.apiUrl}/${id}`; 
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.delete<any>(url, { headers }).pipe(
+      catchError(error => {
+        console.error('Error deleting lesson:', error);
+        return throwError(error);
+      })
+    );
+  }
+
 }

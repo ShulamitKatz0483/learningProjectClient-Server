@@ -32,4 +32,16 @@ export class UserService {
     console.log(url);
     return this.http.get<any>(url);
   }
+  updateUser(user: any): Observable<any> {
+    const url = `${this.apiUrl}`;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this.http.put<any>(url, user, { headers })
+    .pipe(
+      catchError(error => {
+        console.error('Error update user:', error);
+        return throwError(error);
+      })
+    );
+  }
 }
