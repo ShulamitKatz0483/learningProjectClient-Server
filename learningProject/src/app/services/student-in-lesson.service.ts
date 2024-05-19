@@ -13,7 +13,7 @@ export class StudentInLessonService {
 
  
   addStudentToLesson(data:any): Observable<any> {
-    const url = `${this.apiUrl}/studentInLesson`;
+    const url = `${this.apiUrl}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     return this.http.post<any>(url, data)
@@ -25,10 +25,7 @@ export class StudentInLessonService {
     );
   }
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`);
+    return this.http.get<any>(`${this.apiUrl}/studentInLesson`);
   }
 
-  getStudentInLessonByStudentId(id:any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/studentId/${id}`);
-  }
 }

@@ -7,8 +7,12 @@ exports.create = async (req, res) => {
         });
         return;
     }
+<<<<<<< HEAD
     let userLesson;findAllByIdUser
     //let userLessons = [];
+=======
+    let userLesson;
+>>>>>>> 77ab5e64985b3cebe287b25580c89219876cb724
     const userLessons = await dal.findAllByIdUser(req.body.idUser);//all lessons of this student
     console.log("userLessons")
     console.log(userLessons)
@@ -81,6 +85,7 @@ exports.findOneById = async (req, res) => {
 
 exports.delete = async (req, res) => {
     const id = req.params.id;
+    console.log(id);
     await dal.delete(id)
         .then(num => {
             if (num == 1)

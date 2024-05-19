@@ -62,6 +62,7 @@ exports.delete = async (req, res) => {
 
     exports.update = async (req, res) => {
         const id = req.body.idSubCategory;
+        console.log(req.body);
         await dal.update(req.body, id)
             .then(num => {
                 if (num == 1)

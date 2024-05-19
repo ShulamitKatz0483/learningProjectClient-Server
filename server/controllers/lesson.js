@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
 exports.create = async (req, res) => {
+    console.log("cretae lesson" );
+    console.log(req.body);
     if (!req.body) {
         res.status(400).send({
             message: "Content can't be empty!"
