@@ -25,17 +25,7 @@ export class StudentInLessonService {
     );
   }
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`);
-  }
-  deleteStudentFromLesson(id:number){
-    const url = `${this.apiUrl}/${id}`; 
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.delete<any>(url, { headers }).pipe(
-      catchError(error => {
-        console.error('Error deleting lesson:', error);
-        return throwError(error);
-      })
-    );
+    return this.http.get<any>(`${this.apiUrl}/studentInLesson`);
   }
 
 }
