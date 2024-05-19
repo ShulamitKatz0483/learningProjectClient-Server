@@ -27,6 +27,10 @@ isManager:boolean=false;
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
       this.userService.getUserIdByEmail(email).subscribe(data => {
+        console.log("dataaaaa");
+        
+        console.log(data);
+        
         if (data && data.password === password) {
           localStorage.setItem('user', JSON.stringify(data));
           this.isManager=data.isManager;

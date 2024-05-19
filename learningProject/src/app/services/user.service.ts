@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,13 @@ export class UserService {
   getUserIdByEmail(email:string) :Observable<any> {    
     const url = `${this.apiUrl}/email?email=${email}`;
     console.log(url);
-    return this.http.get<any>(url);
+    return this.http.get<any>(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error occurred:', error);
+        // Return default data in case of error
+        return of({ error: 'Error fetching user data', details: error.message });
+      })
+    );
   }
   updateUser(user: any): Observable<any> {
     const url = `${this.apiUrl}`;

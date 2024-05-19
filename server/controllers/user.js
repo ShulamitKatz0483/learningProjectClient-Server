@@ -52,6 +52,7 @@ exports.findOneByEmail = async (req, res) => {
         return res.status(400).send('email is required!');
     }
     const found = await dal.findOneByEmail(email);
+    
     if (!found) {
         return res.status(401).send({
             message: `Cannot find user by email = ${email}`
