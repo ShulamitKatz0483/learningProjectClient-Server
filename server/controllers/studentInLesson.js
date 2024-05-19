@@ -7,7 +7,7 @@ exports.create = async (req, res) => {
         });
         return;
     }
-    let userLesson;
+    let userLesson;findAllByIdUser
     //let userLessons = [];
     const userLessons = await dal.findAllByIdUser(req.body.idUser);//all lessons of this student
     console.log("userLessons")
@@ -32,6 +32,22 @@ exports.create = async (req, res) => {
 }
 exports.findAll = async (req, res) => {
     await dal.findAll()
+        .then((data) => {
+            if (data) {
+                console.log("!!");
+                res.send(data);
+            }
+            else {
+                console.log("!!");
+                res.status(404).send({
+                    message: `Cannot find studentInLessons`
+                });
+            }
+        })
+}
+exports.findAllByStudentId = async (req, res) => {
+    const id = req.params.id;
+    await dal.findAllByIdUser(id)
         .then((data) => {
             if (data) {
                 console.log("!!");

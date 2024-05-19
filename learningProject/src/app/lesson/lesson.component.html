@@ -1,6 +1,18 @@
 <div *ngIf="isUserLoggedIn"><button mat-button color="primary" (click)="logOut()">log out</button>
- <button  (mouseenter)="userOnMouseEnter()"  (mouseleave)="userOnMouseLeave()" mat-icon-button color="warn"> 
+ <button (mouseenter)="userOnMouseEnter()"  (mouseleave)="userOnMouseLeave()" mat-icon-button color="warn"> 
 <mat-icon>person</mat-icon></button>
+<div class="btn-group">
+  <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+    Profile
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Your lessond</a></li>
+    <li><a class="dropdown-item" href="#">Edit your profile</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+  </ul>
+</div>
+
 <p>{{ dynamicContent }}</p>
 </div>
 

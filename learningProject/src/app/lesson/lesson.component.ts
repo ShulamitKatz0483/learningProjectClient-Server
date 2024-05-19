@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { LessonService } from '../services/lesson.service';
 import { SubCategoryService } from '../services/sub-category.service';
-
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -20,8 +19,10 @@ export class LessonComponent implements OnInit {
     lessonsData: any[] = [];
     subCategoryData: any[] = [];
     userData: any[] = [];
+    lessonsStudent: any[] = [];
     storedData: any;
     isUserLoggedIn: boolean = false;
+    isStudentLesson: boolean = false;
     displayedColumns: string[] = ['lessonName', 'lectureName', 'time'];
     dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
     @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -39,13 +40,38 @@ export class LessonComponent implements OnInit {
         private router: Router,
         private studenInLessonService: StudentInLessonService) { }
     async ngOnInit(): Promise<void> {
-        await this.getLesson();
+        if (this.isStudentLesson) {
+            await this.getStudentLesson();
+        }
+        else
+            await this.getLesson();
         await this.getSubCategory();
         await this.getLectur();
         this.margeData();
+        await this.getStudentLesson();
         const userData = localStorage?.getItem('user');
         this.isUserLoggedIn = !!userData; // S
     }
+    getStudentLesson(): Promise<any> {
+        const dataUser = localStorage.getItem('user');
+        let user: { idUser: any; };
+        if (dataUser) {
+            user = JSON.parse(dataUser);
+        }
+        return new Promise((resolve, reject) => {
+            this.studenInLessonService.getStudentInLessonByStudentId(user.idUser).subscribe(
+                (data) => {
+                    this.lessonsData = data;
+                    resolve(data);
+                },
+                (error) => {
+                    console.error(error);
+                    reject(error);
+                }
+            );
+        });
+    }
+
     userOnMouseEnter() {
         const dataUser = localStorage.getItem('user');
         if (dataUser) {
@@ -65,7 +91,7 @@ export class LessonComponent implements OnInit {
             this.subCategoryData.forEach(subCategory => {
                 if (lesson.idSubCategory === subCategory.idSubCategory) {
                     mergedLesson.lessonName = subCategory.subCategoryName;
-                    mergedLesson.idLesson = subCategory.idSubCategory;
+                    mergedLesson.idLesson = lesson.idLesson;
                 }
             });
             this.userData.forEach(user => {
@@ -131,12 +157,10 @@ export class LessonComponent implements OnInit {
             const nameMatch = filterValue.lessonName ? lesson.lessonName.toLowerCase().includes(filterValue.lessonName.toLowerCase()) : true;
             const timeMatch = filterValue.time ? this.isTimeWithinRange(lesson.time, filterValue.time) : true;
             const lectureNameMatch = filterValue.lectureName ? lesson.lectureName.toLowerCase().includes(filterValue.lectureName.toLowerCase()) : true;
-
             return nameMatch && timeMatch && lectureNameMatch;
         };
 
         this.dataSource.filter = Math.random().toString();
-
         if (this.dataSource.filteredData) {
             this.lessonsData = this.dataSource.filteredData;
         }

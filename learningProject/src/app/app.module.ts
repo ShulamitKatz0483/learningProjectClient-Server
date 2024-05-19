@@ -20,6 +20,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { LoginComponent } from './login/login.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LessonForManagerComponent } from './lesson-for-manager/lesson-for-manager.component';
+import { HomeComponent } from './home/home.component';
+import { LessonsForStudentComponent } from './lessons-for-student/lessons-for-student.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { LessonForManagerComponent } from './lesson-for-manager/lesson-for-manag
     SignUpComponent,
     LoginComponent,
     LessonForManagerComponent,
+    HomeComponent,
+    LessonsForStudentComponent
   ],
   imports: [
     BrowserModule,

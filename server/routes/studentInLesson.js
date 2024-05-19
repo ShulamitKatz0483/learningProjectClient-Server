@@ -11,4 +11,6 @@ router.route('/:id')
     .get(studentInLesson.findOneById)
     .delete(studentInLesson.delete);
 
+router.route('/studentId/:id')
+    .get(studentInLesson.findAllByStudentId);
 module.exports = router;

@@ -7,7 +7,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class StudentInLessonService {
 
-  private apiUrl = 'http://localhost:8000'; 
+  private apiUrl = 'http://localhost:8000/studentInLesson'; 
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +25,10 @@ export class StudentInLessonService {
     );
   }
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/studentInLesson`);
+    return this.http.get<any>(`${this.apiUrl}`);
+  }
+
+  getStudentInLessonByStudentId(id:any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/studentId/${id}`);
   }
 }
