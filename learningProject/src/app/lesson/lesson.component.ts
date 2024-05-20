@@ -41,36 +41,36 @@ export class LessonComponent implements OnInit {
         private studenInLessonService: StudentInLessonService) { }
     async ngOnInit(): Promise<void> {
         if (this.isStudentLesson) {
-            await this.getStudentLesson();
+            //await this.getStudentLesson();
         }
         else
             await this.getLesson();
         await this.getSubCategory();
         await this.getLectur();
         this.margeData();
-        await this.getStudentLesson();
+       // await this.getStudentLesson();
         const userData = localStorage?.getItem('user');
         this.isUserLoggedIn = !!userData; // S
     }
-    getStudentLesson(): Promise<any> {
-        const dataUser = localStorage.getItem('user');
-        let user: { idUser: any; };
-        if (dataUser) {
-            user = JSON.parse(dataUser);
-        }
-        return new Promise((resolve, reject) => {
-            this.studenInLessonService.getStudentInLessonByStudentId(user.idUser).subscribe(
-                (data) => {
-                    this.lessonsData = data;
-                    resolve(data);
-                },
-                (error) => {
-                    console.error(error);
-                    reject(error);
-                }
-            );
-        });
-    }
+    // getStudentLesson(): Promise<any> {
+    //     const dataUser = localStorage.getItem('user');
+    //     let user: { idUser: any; };
+    //     if (dataUser) {
+    //         user = JSON.parse(dataUser);
+    //     }
+    //     return new Promise((resolve, reject) => {
+    //         this.studenInLessonService.getStudentInLessonByStudentId(user.idUser).subscribe(
+    //             (data) => {
+    //                 this.lessonsData = data;
+    //                 resolve(data);
+    //             },
+    //             (error) => {
+    //                 console.error(error);
+    //                 reject(error);
+    //             }
+    //         );
+    //     });
+    // }
 
     userOnMouseEnter() {
         const dataUser = localStorage.getItem('user');

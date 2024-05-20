@@ -25,7 +25,7 @@ export class StudentInLessonService {
     );
   }
   getData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/studentInLesson`);
+    return this.http.get<any>(`${this.apiUrl}`);
   }
 
 }

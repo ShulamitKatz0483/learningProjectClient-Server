@@ -302,7 +302,7 @@ export class LessonForManagerComponent implements OnInit {
             );
     }
     async deleteLesson() {
-        await this.deleteStudentFromLesson();
+      //  await this.deleteStudentFromLesson();
         this.lessonService.deleteLesson(this.editLessonForm.value.idLesson)
             .subscribe(
                 (res) => {
@@ -314,20 +314,20 @@ export class LessonForManagerComponent implements OnInit {
             );
             window.location.reload();
     }
-    deleteStudentFromLesson() {
-        for (let i = 0; i < this.editLessonForm.value.studentsInLesson.length; i++) {
-            const studentsInLesson = this.editLessonForm.value.studentsInLesson[i];
-            this.studenInLessonService.deleteStudentFromLesson(studentsInLesson.idStudentInLesson)
-                .subscribe(
-                    (res) => {
-                        console.log(res);
-                    },
-                    (error) => {
-                        alert(error.error.message);
-                    }
-                );
-        }
-    }
+    // deleteStudentFromLesson() {
+    //     for (let i = 0; i < this.editLessonForm.value.studentsInLesson.length; i++) {
+    //         const studentsInLesson = this.editLessonForm.value.studentsInLesson[i];
+    //         this.studenInLessonService.deleteStudentFromLesson(studentsInLesson.idStudentInLesson)
+    //             .subscribe(
+    //                 (res) => {
+    //                     console.log(res);
+    //                 },
+    //                 (error) => {
+    //                     alert(error.error.message);
+    //                 }
+    //             );
+    //     }
+    // }
     addNewLesson(){
         const newLesson=new NewLesson(); 
         newLesson.idSubCategory= this.selectedSubCategoryId;  
