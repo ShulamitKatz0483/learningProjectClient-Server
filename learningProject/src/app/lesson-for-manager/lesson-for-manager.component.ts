@@ -211,7 +211,9 @@ export class LessonForManagerComponent implements OnInit {
             const nameMatch = filterValue.lessonName ? lesson.lessonName.toLowerCase().includes(filterValue.lessonName.toLowerCase()) : true;
             const timeMatch = filterValue.time ? this.isTimeWithinRange(lesson.time, filterValue.time) : true;
             const lectureNameMatch = filterValue.lectureName ? lesson.lectureName.toLowerCase().includes(filterValue.lectureName.toLowerCase()) : true;
-            return nameMatch && timeMatch && lectureNameMatch;
+            const numOfStudentsMatch = filterValue.numOfStudents !== null && filterValue.numOfStudents !== undefined ?
+            lesson.numOfStudents === parseInt(filterValue.numOfStudents) : true;
+            return nameMatch && timeMatch && lectureNameMatch && numOfStudentsMatch;
         };
 
         this.dataSource.filter = Math.random().toString();
